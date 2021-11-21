@@ -1,19 +1,19 @@
-import logging
-from discord.ext import commands
+import configuration as conf
 from discord import Intents
+from discord.ext import commands
 import internal_functions as ifunc
+import logging
 import os
-from token import token
 
-logging.basicConfig(filename = "bot.log",
+logging.basicConfig(filename = conf.log_filename,
                     filemode = 'a',
-                    format = '[%(asctime)s.%(msecs)d] [%(levelname)s] [%(name)s] %(message)s',
-                    datefmt = '%Y%m%d %H%M%S',
+                    format = conf.log_format,
+                    datefmt = conf.log_dateformat,
                     level = logging.WARN)
 
-bot = commands.Bot(command_prefix = "mib!", 
+bot = commands.Bot(command_prefix = conf.bot_prefix, 
                    intents = Intents.default(),
-                   owner_id = 233018119856062466)
+                   owner_id = conf.bot_owner)
 
 # Admin commands
 @bot.command()
@@ -34,4 +34,4 @@ async def eval(ctx, arg):
 async def ping(ctx):
     await ctx.send(f"Pong {round(bot.latency * 1000)}ms")
 
-bot.run(token)
+bot.run(os.environ['mibtoken'])
